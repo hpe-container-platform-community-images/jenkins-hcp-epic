@@ -4,7 +4,7 @@ builder organization --name hpe
 catalog new --distroid jenkins \
   --name "Jenkins" \
   --desc "Jenkins" \
-  --version 1.4 \
+  --version 1.9 \
   --categories "CICD" \
   --catalogapi 5
 
@@ -28,8 +28,8 @@ appconfig package
 
 logo file --filepath cool-jenkins2x3.png
 
-image build --basedir image --image-repotag bluedata/jenkins:1.4
-image package --image-repotag bluedata/jenkins:1.4 --os ubuntu16 --roles webserver controller worker
+image build --basedir image --image-repotag bluedata/jenkins:1.9
+image package --image-repotag bluedata/jenkins:1.9 --os ubuntu16 --roles webserver controller worker
 catalog save --filepath staging/jenkins-ubuntu16.json --force
 sources package
 catalog package
