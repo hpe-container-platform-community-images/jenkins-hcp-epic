@@ -1,0 +1,35 @@
+#!/opt/bluedata/bdworkbench-4.0/bin/bdwb
+
+builder organization --name hpe
+catalog new --distroid jenkins \
+  --name "Jenkins" \
+  --desc "Jenkins" \
+  --version 1.4 \
+  --categories "CICD" \
+  --catalogapi 5
+
+role add controller 1
+role add webserver 0
+role add worker 0
+
+service add --srvcid httpd --name "Jenkins" --scheme "http" \
+  --port 8080 --display \
+  --sysctl jenkins \
+  --onroles webserver controller worker
+
+service add --srvcid jenkinsrpc --name "JenkinsRPC" \
+  --port 50000  \
+  --onroles webserver controller worker
+
+appconfig autogen --new
+
+appconfig autogen --generate
+appconfig package
+
+logo file --filepath cool-jenkins2x3.png
+
+image build --basedir image --image-repotag bluedata/jenkins:1.4
+image package --image-repotag bluedata/jenkins:1.4 --os ubuntu16 --roles webserver controller worker
+catalog save --filepath staging/jenkins-ubuntu16.json --force
+sources package
+catalog package
